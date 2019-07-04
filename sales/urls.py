@@ -17,7 +17,10 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
 
+from .views import item_list
+
 urlpatterns = [
+    path('', item_list, name='item_list'),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
 ]
