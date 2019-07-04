@@ -16,11 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
-
-from .views import item_list
+#from .views import views
+from .views import item_list 
+from .  import views
 
 urlpatterns = [
     path('', item_list, name='item_list'),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
+    path('products/', views.products),
+    path('checkout/', views.check_out)
 ]

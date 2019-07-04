@@ -72,7 +72,10 @@ ROOT_URLCONF = 'sales.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['/templates/product-page.html', 
+        '/templates/checkout-page.html'
+        
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
