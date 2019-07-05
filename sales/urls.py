@@ -19,7 +19,7 @@ from django.conf.urls import include
 #from .views import views
 
 from .views import HomeView
-from .views import  ItemDetailView
+from .views import  ItemDetailView, add_to_cart #OrderSummaryView
 from .  import views
 
 app_name = 'sales'
@@ -28,6 +28,8 @@ urlpatterns = [
     path('', HomeView.as_view(), name='home-page'),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
+    #path('order-summary/', OrderSummaryView.as_view(), name='order-summary'),
     path('products/<slug>', ItemDetailView.as_view(),  name="products"),
-    path('checkout/', views.check_out)
+    path('checkout/', views.check_out),
+    path('add-to-cart/<slug>/', add_to_cart, name="add-to-cart")
 ]
