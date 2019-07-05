@@ -28,6 +28,6 @@ urlpatterns = [
     path('', HomeView.as_view(), name='home-page'),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
-    path('products/<slug>', ItemDetailView.as_view()),
+    path('products/<slug>', ItemDetailView.as_view(),  name="products"),
     path('checkout/', views.check_out)
 ]
