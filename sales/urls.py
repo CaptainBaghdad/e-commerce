@@ -17,13 +17,17 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
 #from .views import views
-from .views import item_list 
+
+from .views import HomeView
+from .views import  ItemDetailView
 from .  import views
 
+app_name = 'sales'
+
 urlpatterns = [
-    path('', item_list, name='item_list'),
+    path('', HomeView.as_view(), name='home-page'),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
-    path('products/', views.products),
+    path('products/<slug>', ItemDetailView.as_view()),
     path('checkout/', views.check_out)
 ]

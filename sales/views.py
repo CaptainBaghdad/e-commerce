@@ -1,16 +1,32 @@
 from django.shortcuts import render
 from .models import Item
+from django.views.generic import ListView
+from django.views.generic import DetailView
 
 
-def item_list(request):
+def products(request):
     context = {
         'items': Item.objects.all()
     }
 
-    return render(request, "home-page.html", context)
+    return render(request, "product-page.html", context)
 
-def products(request):
-    return render(request, 'product-page.html')
+
+
+class ItemDetailView(DetailView):
+    model = Item
+    template_name = 'product-page.html'
+
+class HomeView(ListView):
+
+    model= Item
+    template_name = 'home-page.html'
+
+    
+
+
+
+
 
 
 
