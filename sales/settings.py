@@ -74,7 +74,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': ['/templates/product-page.html', 
-        '/templates/checkout-page.html'
+        '/templates/checkout-page.html', 
+        '/templates/order-summary.html'
         
         ],
         'APP_DIRS': True,
