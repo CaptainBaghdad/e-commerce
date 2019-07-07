@@ -1,6 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Item, OrderedItem, Order
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView
 from django.views.generic import DetailView
 from django.utils import timezone
@@ -19,6 +22,7 @@ class ItemDetailView(DetailView):
     model = Item
     template_name = 'product-page.html'
 
+@login_required
 def add_to_cart(request,slug):
     item = get_object_or_404(Item, slug=slug)
     order_item, created = OrderedItem.objects.get_or_create(
@@ -35,15 +39,17 @@ def add_to_cart(request,slug):
         if order.items.filter(item__slug= item.slug).exists():
             order_item.quantity += 1
             order_item.save()
+            messages.info(request, "The item qty was updated successfully ")
 
         else:
             order.items.add(order_item)
-            #messages.info(request, "This item was added to your cart.")
+            messages.info(request, "This item was added to your cart.")
             #return redirect("order-summary")
     else:
         ordered_date = timezone.now()
         order = Order.objects.create(user = request.user, ordered_date=ordered_date)
         order.items.add(order_item)
+        messages.info(request, "Item was added to the cart successfully")
     
     return redirect("products",slug= slug)
 
@@ -51,14 +57,17 @@ class HomeView(ListView):
 
     model= Item
     template_name = 'home-page.html'
+    paginate_by = 1
 
+
+@login_required
 def remove_from_cart(request, slug):
     item = get_object_or_404(Item, slug = slug)
     order_qs = Order.objects.filter(user= request.user, ordered=False)
     if order_qs.exists():
         order = order_qs[0]
 
-        if order.items.filter(item__slug= item.slug).exists():
+        if order.items.filter(item__slug = item.slug).exists():
             order_item =  OrderedItem.objects.filter(
             item=item,
             user = request.user,
@@ -66,7 +75,7 @@ def remove_from_cart(request, slug):
             )[0]
             order.items.remove(order_item)
             messages.info(request, "This item was removed from your cart")
-            return redirect("products")
+            return redirect("home-page")
         else:
             messages.info(request, "This item was not in your cart")
             return redirect("products", slug=slug)
