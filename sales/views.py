@@ -56,8 +56,9 @@ def add_to_cart(request,slug):
 class HomeView(ListView):
 
     model= Item
-    template_name = 'home-page.html'
     paginate_by = 1
+    template_name = 'home-page.html'
+   
 
 
 @login_required
