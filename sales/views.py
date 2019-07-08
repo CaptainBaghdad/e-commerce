@@ -7,6 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView
 from django.views.generic import DetailView, View
 from django.utils import timezone
+from .forms import CheckoutForm
 
 
 def products(request):
@@ -125,22 +126,13 @@ class OrderSummaryView(View):
             messages.warning(self.request, "You do not have an active order")
             return redirect("/")
 
+class CheckoutView(View):
 
-
-
+    def get(self, *args, **kwargs):
         
-
-    
-    
-
-    
-
-
-
-
-
-
-
-def check_out(request):
-
-    return render(request, 'checkout-page.html')
+        order = Order.objects.get(user = self.request.user, ordered = False)
+        form = CheckoutForm()
+        context = {
+            'form': form
+        }
+        return render(self.request, "checkout.html", context)
